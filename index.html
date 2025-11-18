@@ -1877,9 +1877,42 @@
             if (diffHours < 24) return `${diffHours} hours ago`;
             return `${diffDays} days ago`;
         }
+
+
+
+        function handleMobileLayout() {
+        const isMobile = window.innerWidth <= 768;
+        const mainContent = document.querySelector('.main-content');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        if (isMobile) {
+            // Ensure proper height calculation for mobile
+            contentSections.forEach(section => {
+                section.style.height = '100%';
+                section.style.display = 'none';
+            });
+            
+            const activeSection = document.querySelector('.content-section.active');
+            if (activeSection) {
+                activeSection.style.display = 'flex';
+            }
+        } else {
+            // Reset for desktop
+            contentSections.forEach(section => {
+                section.style.height = '';
+                section.style.display = 'none';
+            });
+            
+            const activeSection = document.querySelector('.content-section.active');
+            if (activeSection) {
+                activeSection.style.display = 'block';
+            }
+        }
+    }
     </script>
 </body>
 </html>
+
 
 
 
