@@ -1878,61 +1878,7 @@
             return `${diffDays} days ago`;
         }
     </script>
-
-    script>
-    // ... all your existing user, animal, and authentication variables ...
-    const users = [ /* your existing users array */ ];
-    let animals = JSON.parse(localStorage.getItem('animals')) || [];
-    let activities = JSON.parse(localStorage.getItem('activities')) || [];
-    let currentUser = null;
-    let currentEditingId = null;
-
-    // ===== NEW: Mobile Layout Handler =====
-    function handleMobileLayout() {
-        const isMobile = window.innerWidth <= 768;
-        const contentSections = document.querySelectorAll('.content-section');
-        
-        if (isMobile) {
-            contentSections.forEach(section => {
-                section.style.height = '100%';
-                section.style.display = 'none';
-            });
-            
-            const activeSection = document.querySelector('.content-section.active');
-            if (activeSection) {
-                activeSection.style.display = 'flex';
-            }
-        } else {
-            contentSections.forEach(section => {
-                section.style.height = '';
-                section.style.display = 'none';
-            });
-            
-            const activeSection = document.querySelector('.content-section.active');
-            if (activeSection) {
-                activeSection.style.display = 'block';
-            }
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // ... all your existing DOMContentLoaded code ...
-        
-        // ADD MOBILE LAYOUT HANDLING:
-        handleMobileLayout();
-        window.addEventListener('resize', handleMobileLayout);
-        
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                setTimeout(handleMobileLayout, 100);
-            });
-        });
-        
-        // ... rest of your existing event listeners ...
-    });
-
-    // ... all your existing functions (authenticateUser, showAppScreen, etc.) ...
-</script>
 </body>
 </html>
+
 
