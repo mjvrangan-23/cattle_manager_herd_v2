@@ -46,7 +46,7 @@
             color: var(--text-dark);
             background-color: var(--bg-light);
             height: 100vh;
-            height: 100dvh; /* Dynamic viewport height for mobile */
+            height: 100dvh;
             overflow: hidden;
             position: fixed;
             width: 100%;
@@ -124,7 +124,7 @@
             padding: 16px 15px;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            font-size: 16px; /* Prevents zoom on iOS */
+            font-size: 16px;
             transition: var(--transition);
             -webkit-appearance: none;
         }
@@ -183,7 +183,7 @@
             font-size: 0.8rem;
         }
 
-        /* ===== App Screen ===== */
+        /* ===== FIXED: App Screen Layout ===== */
         #appScreen {
             display: none;
             flex-direction: column;
@@ -194,6 +194,7 @@
             left: 0;
             right: 0;
             bottom: 0;
+            width: 100vw;
         }
 
         /* ===== Header ===== */
@@ -243,7 +244,7 @@
         }
 
         .user-info {
-            display: none; /* Hide on mobile */
+            display: none;
             align-items: center;
             gap: 8px;
             padding: 6px 12px;
@@ -267,15 +268,17 @@
             background: #e9ecef;
         }
 
-        /* ===== Main Layout ===== */
+        /* ===== FIXED: Main Layout Container ===== */
         .app-main {
             display: flex;
             flex: 1;
             overflow: hidden;
             min-height: 0;
+            position: relative;
+            width: 100%;
         }
 
-        /* ===== Sidebar Navigation ===== */
+        /* ===== FIXED: Sidebar ===== */
         .sidebar {
             width: 280px;
             background: var(--bg-white);
@@ -285,18 +288,16 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             flex-shrink: 0;
-            display: none; /* Hidden on mobile by default */
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 99;
         }
 
         .sidebar.active {
             display: block;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            bottom: 0;
-            z-index: 99;
-            width: 280px;
-            background: var(--bg-white);
         }
 
         .nav-section {
@@ -355,17 +356,24 @@
             flex-shrink: 0;
         }
 
-        /* ===== Main Content ===== */
+        /* ===== FIXED: Main Content Area ===== */
         .main-content {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             width: 100%;
+            height: 100%;
+            position: relative;
         }
 
+        /* ===== FIXED: Content Sections ===== */
         .content-section {
             display: none;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .content-section.active {
@@ -395,12 +403,19 @@
             min-width: 200px;
         }
 
-        /* ===== Dashboard ===== */
+        /* ===== FIXED: Dashboard Specific Styles ===== */
+        #dashboard.active {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
+            flex-shrink: 0;
         }
 
         .stat-card {
@@ -455,6 +470,9 @@
             box-shadow: var(--shadow);
             padding: 20px;
             margin-bottom: 20px;
+            flex: 1;
+            min-height: 200px;
+            overflow-y: auto;
         }
 
         .recent-activities h3 {
@@ -505,13 +523,23 @@
             color: var(--text-light);
         }
 
-        /* ===== Data Tables ===== */
+        /* ===== FIXED: Animal Management Specific Styles ===== */
+        #animals.active {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
         .data-table-container {
             background: var(--bg-white);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow: hidden;
             margin-bottom: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
         }
 
         .table-header {
@@ -522,6 +550,7 @@
             border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .table-header h3 {
@@ -542,10 +571,17 @@
             font-size: 0.85rem;
         }
 
+        .data-table-wrapper {
+            flex: 1;
+            overflow: auto;
+            min-height: 0;
+        }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
+            min-width: 600px;
         }
 
         .data-table th {
@@ -704,7 +740,7 @@
             padding: 14px 15px;
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            font-size: 16px; /* Prevents zoom on iOS */
+            font-size: 16px;
             transition: var(--transition);
             -webkit-appearance: none;
         }
@@ -732,13 +768,53 @@
             flex-wrap: wrap;
         }
 
-        /* ===== Login Error ===== */
-        .login-error {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 10px;
+        /* ===== View Animal Modal ===== */
+        .animal-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-group {
+            margin-bottom: 15px;
+        }
+
+        .detail-group label {
+            font-weight: 600;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .detail-group p {
+            color: var(--text-dark);
+            padding: 8px 0;
+        }
+
+        .animal-photo {
+            grid-column: 1 / -1;
             text-align: center;
-            display: none;
+            margin: 20px 0;
+        }
+
+        .photo-placeholder {
+            width: 200px;
+            height: 150px;
+            background: var(--bg-light);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: var(--text-light);
+        }
+
+        .photo-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
         /* ===== Mobile Overlay ===== */
@@ -757,14 +833,21 @@
             display: block;
         }
 
-        /* ===== Responsive Design ===== */
+        /* ===== Login Error ===== */
+        .login-error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        /* ===== FIXED: Mobile Layout Adjustments ===== */
         @media (max-width: 768px) {
-            /* Show mobile menu button */
             .mobile-menu-btn {
                 display: block;
             }
 
-            /* Show user info in header */
             .user-info {
                 display: flex;
                 font-size: 0.8rem;
@@ -775,11 +858,22 @@
                 font-size: 1.1rem;
             }
 
-            /* Main content adjustments */
             .main-content {
                 padding: 15px;
+                height: calc(100vh - 60px);
+                height: calc(100dvh - 60px);
             }
-
+            
+            .content-section.active {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            #dashboard.active {
+                padding-bottom: 0;
+            }
+            
             .section-header {
                 margin-bottom: 20px;
             }
@@ -788,10 +882,10 @@
                 font-size: 1.3rem;
             }
 
-            /* Dashboard stats */
             .dashboard-stats {
                 grid-template-columns: 1fr;
                 gap: 12px;
+                margin-bottom: 20px;
             }
 
             .stat-card {
@@ -809,13 +903,38 @@
                 font-size: 1.3rem;
             }
 
-            /* Table adjustments */
+            .recent-activities {
+                flex: 1;
+                margin-bottom: 0;
+                min-height: 150px;
+            }
+            
+            #animals.active {
+                padding-bottom: 0;
+            }
+
             .table-header {
                 padding: 12px 15px;
+                position: sticky;
+                top: 0;
+                background: var(--bg-white);
+                z-index: 10;
             }
 
             .table-header h3 {
                 font-size: 1.1rem;
+            }
+
+            .data-table-container {
+                flex: 1;
+                margin-bottom: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .data-table-wrapper {
+                flex: 1;
+                overflow: auto;
             }
 
             .data-table {
@@ -827,15 +946,19 @@
                 padding: 10px 12px;
             }
 
+            .sidebar.active + .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
             /* Hide some table columns on mobile */
-            .data-table th:nth-child(4), /* Age */
+            .data-table th:nth-child(4),
             .data-table td:nth-child(4),
-            .data-table th:nth-child(5), /* Intake Date */
+            .data-table th:nth-child(5),
             .data-table td:nth-child(5) {
                 display: none;
             }
 
-            /* Modal adjustments */
             .modal-content {
                 margin: 10px;
                 max-width: none;
@@ -880,8 +1003,21 @@
                 padding: 14px 20px;
             }
 
+            .section-header {
+                margin-bottom: 15px;
+            }
+
+            .dashboard-stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+                min-height: 70px;
+            }
+
             /* Further simplify table */
-            .data-table th:nth-child(3), /* Breed */
+            .data-table th:nth-child(3),
             .data-table td:nth-child(3) {
                 display: none;
             }
@@ -907,25 +1043,20 @@
             }
         }
 
-        /* Landscape orientation fixes */
+        /* ===== FIXED: Landscape Mode ===== */
         @media (max-height: 500px) and (orientation: landscape) {
-            #loginScreen {
-                padding: 10px;
-                align-items: flex-start;
+            .main-content {
+                height: calc(100vh - 50px);
+                height: calc(100dvh - 50px);
             }
             
-            .login-container {
-                max-height: 90vh;
-                overflow-y: auto;
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
             
-            .app-header {
-                height: 50px;
-                min-height: 50px;
-            }
-            
-            .sidebar.active {
-                top: 50px;
+            .recent-activities {
+                min-height: 120px;
             }
         }
 
@@ -1148,26 +1279,29 @@
                             </div>
                         </div>
                         
-                        <table class="data-table" id="animalsTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Species</th>
-                                    <th>Breed</th>
-                                    <th>Age</th>
-                                    <th>Intake Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="animalsTableBody">
-                                <tr>
-                                    <td colspan="7" style="text-align: center; padding: 30px;">
-                                        <p>No animals found. <a href="#" id="addFirstAnimal" style="color: var(--primary);">Add your first animal</a></p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!-- ADDED: Data Table Wrapper for proper scrolling -->
+                        <div class="data-table-wrapper">
+                            <table class="data-table" id="animalsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Species</th>
+                                        <th>Breed</th>
+                                        <th>Age</th>
+                                        <th>Intake Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="animalsTableBody">
+                                    <tr>
+                                        <td colspan="7" style="text-align: center; padding: 30px;">
+                                            <p>No animals found. <a href="#" id="addFirstAnimal" style="color: var(--primary);">Add your first animal</a></p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </section>
 
@@ -1431,6 +1565,36 @@
         let currentUser = null;
         let currentEditingId = null;
 
+        // ===== NEW: Mobile Layout Handler =====
+        function handleMobileLayout() {
+            const isMobile = window.innerWidth <= 768;
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            if (isMobile) {
+                // Ensure proper height calculation for mobile
+                contentSections.forEach(section => {
+                    section.style.height = '100%';
+                    section.style.display = 'none';
+                });
+                
+                const activeSection = document.querySelector('.content-section.active');
+                if (activeSection) {
+                    activeSection.style.display = 'flex';
+                }
+            } else {
+                // Reset for desktop
+                contentSections.forEach(section => {
+                    section.style.height = '';
+                    section.style.display = 'none';
+                });
+                
+                const activeSection = document.querySelector('.content-section.active');
+                if (activeSection) {
+                    activeSection.style.display = 'block';
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Clear any previously saved user to ensure login screen shows
             localStorage.removeItem('currentUser');
@@ -1455,6 +1619,16 @@
                     if (window.innerWidth <= 768) {
                         toggleMobileMenu();
                     }
+                });
+            });
+            
+            // ===== ADDED: Mobile Layout Handling =====
+            handleMobileLayout();
+            window.addEventListener('resize', handleMobileLayout);
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    setTimeout(handleMobileLayout, 100);
                 });
             });
             
@@ -1877,42 +2051,6 @@
             if (diffHours < 24) return `${diffHours} hours ago`;
             return `${diffDays} days ago`;
         }
-
-
-
-        function handleMobileLayout() {
-        const isMobile = window.innerWidth <= 768;
-        const mainContent = document.querySelector('.main-content');
-        const contentSections = document.querySelectorAll('.content-section');
-        
-        if (isMobile) {
-            // Ensure proper height calculation for mobile
-            contentSections.forEach(section => {
-                section.style.height = '100%';
-                section.style.display = 'none';
-            });
-            
-            const activeSection = document.querySelector('.content-section.active');
-            if (activeSection) {
-                activeSection.style.display = 'flex';
-            }
-        } else {
-            // Reset for desktop
-            contentSections.forEach(section => {
-                section.style.height = '';
-                section.style.display = 'none';
-            });
-            
-            const activeSection = document.querySelector('.content-section.active');
-            if (activeSection) {
-                activeSection.style.display = 'block';
-            }
-        }
-    }
     </script>
 </body>
 </html>
-
-
-
-
